@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("secretusbkeydata")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c581b22aa4cb6874292077082102b6fac3152402")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b5493bee0315356bf0e4110d7bb56958c831c7e6")]
 [assembly: System.Reflection.AssemblyProductAttribute("secretusbkeydata")]
 [assembly: System.Reflection.AssemblyTitleAttribute("secretusbkeydata")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
