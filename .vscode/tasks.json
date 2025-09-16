@@ -8,6 +8,148 @@
 			"args": [],
 			"problemMatcher": [],
 			"group": "build"
+		},
+		{
+			"label": "Build Windows Executable (Fast)",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"publish",
+				"-c",
+				"Release",
+				"-r",
+				"win-x64",
+				"--self-contained",
+				"true",
+				"/p:PublishSingleFile=true",
+				"-o",
+				"dist/windows"
+			],
+			"group": "build",
+			"problemMatcher": "$msCompile",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build Windows Executable",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"publish",
+				"-c",
+				"Release",
+				"-r",
+				"win-x64",
+				"--self-contained",
+				"true",
+				"/p:PublishSingleFile=true",
+				"/p:PublishTrimmed=true",
+				"/p:PublishReadyToRun=true"
+			],
+			"group": "build",
+			"problemMatcher": "$msCompile",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build Cross-Platform Executables",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"publish",
+				"-c",
+				"Release",
+				"--self-contained",
+				"true",
+				"/p:PublishSingleFile=true"
+			],
+			"group": "build",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"Build Windows x64",
+				"Build macOS x64",
+				"Build Linux x64"
+			]
+		},
+		{
+			"label": "Build Windows x64",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"publish",
+				"-c",
+				"Release",
+				"-r",
+				"win-x64",
+				"--self-contained",
+				"true",
+				"/p:PublishSingleFile=true",
+				"/p:PublishTrimmed=true",
+				"-o",
+				"dist/win-x64"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build macOS x64",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"publish",
+				"-c",
+				"Release",
+				"-r",
+				"osx-x64",
+				"--self-contained",
+				"true",
+				"/p:PublishSingleFile=true",
+				"/p:PublishTrimmed=true",
+				"-o",
+				"dist/osx-x64"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build Linux x64",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"publish",
+				"-c",
+				"Release",
+				"-r",
+				"linux-x64",
+				"--self-contained",
+				"true",
+				"/p:PublishSingleFile=true",
+				"/p:PublishTrimmed=true",
+				"-o",
+				"dist/linux-x64"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build Windows EXE (Framework Dependent)",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"publish",
+				"-c",
+				"Release",
+				"-r",
+				"win-x64",
+				"-o",
+				"dist/win-framework"
+			],
+			"group": "build"
 		}
 	]
 }
