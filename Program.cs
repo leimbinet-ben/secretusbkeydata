@@ -51,6 +51,27 @@ class Program
             if (drives.Length == 0)
             {
                 Console.WriteLine("No USB drives detected. Please insert a USB stick...");
+                
+                // Debug: Show all available drives on Windows
+                if (OperatingSystem.IsWindows())
+                {
+                    Console.WriteLine("[DEBUG] All detected drives:");
+                    var allDrives = DriveInfo.GetDrives();
+                    foreach (var drive in allDrives)
+                    {
+                        try
+                        {
+                            string readyStatus = drive.IsReady ? "Ready" : "Not Ready";
+                            Console.WriteLine($"[DEBUG]   {drive.Name} - Type: {drive.DriveType}, Status: {readyStatus}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[DEBUG]   {drive.Name} - Error: {ex.Message}");
+                        }
+                    }
+                    Console.WriteLine("[DEBUG] End of drive list\n");
+                }
+                
                 System.Threading.Thread.Sleep(2000);
                 continue;
             }
@@ -241,6 +262,27 @@ class Program
                 if (!monitoringMessageShown)
                 {
                     Console.WriteLine("Monitoring for USB keyfile. Insert your USB stick...");
+                    
+                    // Debug: Show all available drives on Windows
+                    if (OperatingSystem.IsWindows())
+                    {
+                        Console.WriteLine("[DEBUG] All detected drives:");
+                        var allDrives = DriveInfo.GetDrives();
+                        foreach (var drive in allDrives)
+                        {
+                            try
+                            {
+                                string readyStatus = drive.IsReady ? "Ready" : "Not Ready";
+                                Console.WriteLine($"[DEBUG]   {drive.Name} - Type: {drive.DriveType}, Status: {readyStatus}");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"[DEBUG]   {drive.Name} - Error: {ex.Message}");
+                            }
+                        }
+                        Console.WriteLine("[DEBUG] End of drive list\n");
+                    }
+                    
                     monitoringMessageShown = true;
                 }
                 passwordValid = false; // Reset password validation when no drives
@@ -450,6 +492,12 @@ As always, should you or your team be caught or fail, the Secretary will disavow
     {
         try
         {
+            // Debug: Show drive information for Windows debugging
+            if (OperatingSystem.IsWindows())
+            {
+                Console.WriteLine($"[DEBUG] Checking drive {d.Name}: Type={d.DriveType}, Ready={d.IsReady}");
+            }
+            
             // On macOS, USB drives are usually mounted under /Volumes
             if (Environment.OSVersion.Platform == PlatformID.Unix && d.RootDirectory.FullName.StartsWith("/Volumes/"))
             {
@@ -461,7 +509,10 @@ As always, should you or your team be caught or fail, the Secretary will disavow
             {
                 // Primary check: Removable drives
                 if (d.DriveType == DriveType.Removable)
+                {
+                    Console.WriteLine($"[DEBUG] Drive {d.Name} identified as USB (Removable)");
                     return true;
+                }
                 
                 // Secondary check: Fixed drives that might be USB (some USB drives show as Fixed)
                 if (d.DriveType == DriveType.Fixed)
@@ -471,19 +522,29 @@ As always, should you or your team be caught or fail, the Secretary will disavow
                     string systemDrive = Environment.GetEnvironmentVariable("SystemDrive") ?? "C:";
                     if (!d.Name.StartsWith(systemDrive, StringComparison.OrdinalIgnoreCase))
                     {
+                        Console.WriteLine($"[DEBUG] Drive {d.Name} identified as USB (Fixed, non-system)");
                         return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[DEBUG] Drive {d.Name} excluded (system drive)");
                     }
                 }
                 
+                Console.WriteLine($"[DEBUG] Drive {d.Name} not identified as USB");
                 return false;
             }
             
             // On Linux and other platforms, use Removable
             return d.DriveType == DriveType.Removable;
         }
-        catch
+        catch (Exception ex)
         {
             // If any error occurs during detection, err on the side of caution
+            if (OperatingSystem.IsWindows())
+            {
+                Console.WriteLine($"[DEBUG] Error checking drive {d.Name}: {ex.Message}");
+            }
             return false;
         }
     }
